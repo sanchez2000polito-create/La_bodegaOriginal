@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Mis pedidos')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <h1 class="titulo-pagina">Mis pedidos</h1>
+
+    <div class="vacio" th:if="${pedidos.isEmpty()}">
+        <p>Todavía no has hecho pedidos.</p>
+        <a class="btn btn-primario" th:href="@{/catalogo}">Ver catálogo</a>
+    </div>
+
+    <div class="pedidos" th:if="${!pedidos.isEmpty()}">
+        <article class="pedido" th:each="p : ${pedidos}">
+            <header class="pedido-cabecera">
+                <div>
+                    <h2 th:text="'Pedido #' + ${p.id}">Pedido #1</h2>
+                    <p class="texto-suave" th:text="${#temporals.format(p.fecha, 'dd/MM/yyyy HH:mm')}">01/01/2026 10:00</p>
+                </div>
+                <span class="estado" th:text="${p.estado == 'PENDIENTE'} ? 'Pendiente' : ${p.estado}">Pendiente</span>
+            </header>
+
+            <ul class="resumen-lista">
+                <li th:each="i : ${p.items}">
+                    <span th:text="${i.cantidad} + ' × ' + ${i.nombreProducto}">1 × Producto</span>
+                    <strong th:text="'$' + ${#numbers.formatDecimal(i.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</strong>
+                </li>
+            </ul>
+
+            <footer class="pedido-pie">
+                <span class="texto-suave"
+                      th:text="${p.ciudad} + ', ' + ${p.departamento} + ' · ' + (${p.metodoPago == 'PSE'} ? 'PSE' : (${p.metodoPago == 'TARJETA'} ? 'Tarjeta' : 'Contra entrega'))">Ciudad</span>
+                <span class="precio" th:text="'Total: $' + ${#numbers.formatDecimal(p.total, 0, 'POINT', 0, 'COMMA')}">Total: $0</span>
+            </footer>
+        </article>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

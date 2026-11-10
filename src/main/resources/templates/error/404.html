@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Página no encontrada')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <div class="vacio">
+        <h1 class="titulo-pagina">404</h1>
+        <p>No encontramos la página o el producto que buscas.</p>
+        <a class="btn btn-primario" th:href="@{/catalogo}">Ir al catálogo</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

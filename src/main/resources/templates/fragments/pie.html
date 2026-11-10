@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+<!-- Uso: <footer th:replace="~{fragments/pie :: pie}"></footer> -->
+<footer class="pie" th:fragment="pie">
+    <div class="contenedor pie-interno">
+        <div>
+            <p class="logo logo-pie">Bodega<span> de Belleza</span></p>
+            <p class="texto-suave">Cosméticos de las marcas más queridas en Colombia.</p>
+        </div>
+
+        <nav class="pie-enlaces" aria-label="Información">
+            <a th:href="@{/contacto}">Contacto</a>
+            <a th:href="@{/envios}">Envíos y devoluciones</a>
+            <a th:href="@{/terminos}">Términos y condiciones</a>
+        </nav>
+
+        <p class="texto-suave">© <span th:text="${#temporals.year(#temporals.createNow())}">2026</span> Bodega de Belleza. Todos los derechos reservados.</p>
+    </div>
+</footer>
+</body>
+</html>

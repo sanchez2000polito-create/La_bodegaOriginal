@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Finalizar compra')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <h1 class="titulo-pagina">Finalizar compra</h1>
+
+    <div class="carrito-layout">
+        <form class="formulario formulario-checkout" th:action="@{/checkout}" th:object="${checkoutForm}"
+              method="post" novalidate>
+
+            <h2>Datos de envío</h2>
+
+            <label for="nombreDestinatario">Nombre de quien recibe</label>
+            <input id="nombreDestinatario" type="text" th:field="*{nombreDestinatario}">
+            <small class="error" th:if="${#fields.hasErrors('nombreDestinatario')}" th:errors="*{nombreDestinatario}">Error</small>
+
+            <label for="telefono">Teléfono de contacto</label>
+            <input id="telefono" type="tel" th:field="*{telefono}" placeholder="3001234567">
+            <small class="error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</small>
+
+            <div class="fila-dos">
+                <div>
+                    <label for="departamento">Departamento</label>
+                    <select id="departamento" th:field="*{departamento}">
+                        <option value="">Selecciona…</option>
+                        <option th:each="d : ${departamentos}" th:value="${d}" th:text="${d}"></option>
+                    </select>
+                    <small class="error" th:if="${#fields.hasErrors('departamento')}" th:errors="*{departamento}">Error</small>
+                </div>
+                <div>
+                    <label for="ciudad">Ciudad o municipio</label>
+                    <input id="ciudad" type="text" th:field="*{ciudad}">
+                    <small class="error" th:if="${#fields.hasErrors('ciudad')}" th:errors="*{ciudad}">Error</small>
+                </div>
+            </div>
+
+            <label for="direccion">Dirección</label>
+            <input id="direccion" type="text" th:field="*{direccion}" placeholder="Calle 10 # 20-30, apto 301">
+            <small class="error" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}">Error</small>
+
+            <h2>Método de pago</h2>
+            <p class="texto-suave">Por ahora no se realiza ningún cobro: es la estructura para conectar la pasarela más adelante.</p>
+
+            <div class="opciones-pago">
+                <label class="opcion-pago">
+                    <input type="radio" th:field="*{metodoPago}" value="PSE">
+                    <span><strong>PSE</strong><small>Débito desde tu cuenta bancaria</small></span>
+                </label>
+                <label class="opcion-pago">
+                    <input type="radio" th:field="*{metodoPago}" value="TARJETA">
+                    <span><strong>Tarjeta de crédito o débito</strong><small>Visa, Mastercard, etc.</small></span>
+                </label>
+                <label class="opcion-pago">
+                    <input type="radio" th:field="*{metodoPago}" value="CONTRA_ENTREGA">
+                    <span><strong>Contra entrega</strong><small>Pagas al recibir tu pedido</small></span>
+                </label>
+            </div>
+            <small class="error" th:if="${#fields.hasErrors('metodoPago')}" th:errors="*{metodoPago}">Error</small>
+
+            <button type="submit" class="btn btn-primario btn-grande">Confirmar pedido</button>
+        </form>
+
+        <!-- Resumen del pedido -->
+        <aside class="resumen">
+            <h2>Tu pedido</h2>
+            <ul class="resumen-lista">
+                <li th:each="l : ${resumen.lineas}">
+                    <span th:text="${l.cantidad} + ' × ' + ${l.producto.nombre}">1 × Producto</span>
+                    <strong th:text="'$' + ${#numbers.formatDecimal(l.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</strong>
+                </li>
+            </ul>
+            <dl>
+                <div class="resumen-fila">
+                    <dt>Subtotal</dt>
+                    <dd th:text="'$' + ${#numbers.formatDecimal(resumen.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                </div>
+                <div class="resumen-fila">
+                    <dt>Envío</dt>
+                    <dd th:if="${resumen.envioGratis}" class="gratis">¡Gratis!</dd>
+                    <dd th:unless="${resumen.envioGratis}"
+                        th:text="'$' + ${#numbers.formatDecimal(resumen.envio, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                </div>
+                <div class="resumen-fila resumen-total">
+                    <dt>Total</dt>
+                    <dd th:text="'$' + ${#numbers.formatDecimal(resumen.total, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                </div>
+            </dl>
+            <a class="enlace-limpiar" th:href="@{/carrito}">Volver al carrito</a>
+        </aside>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

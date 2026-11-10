@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Envíos y devoluciones')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <article class="pagina-texto">
+        <h1 class="titulo-pagina">Envíos y devoluciones</h1>
+
+        <!--
+            TEXTO DE EJEMPLO: adapta los tiempos y las condiciones a tu negocio y revísalo con un
+            abogado antes de publicar la tienda. El costo del envío y el valor para envío gratis se
+            toman de application-*.properties (tienda.envio.costo y tienda.envio.gratis-desde).
+        -->
+        <h2>Envíos</h2>
+        <p>Enviamos a todos los departamentos de Colombia.</p>
+        <ul class="lista-simple">
+            <li>
+                <strong>Costo:</strong>
+                <span th:text="'$' + ${#numbers.formatDecimal(costoEnvio, 0, 'POINT', 0, 'COMMA')}">$12.900</span>
+                por pedido.
+            </li>
+            <li>
+                <strong>Envío gratis:</strong> en compras desde
+                <span th:text="'$' + ${#numbers.formatDecimal(envioGratisDesde, 0, 'POINT', 0, 'COMMA')}">$150.000</span>.
+            </li>
+            <li><strong>Tiempo de entrega:</strong> de 2 a 5 días hábiles en ciudades principales y de 4 a 8 días hábiles en el resto del país.</li>
+            <li><strong>Seguimiento:</strong> puedes consultar el estado de tu pedido en <a class="enlace-inline" th:href="@{/mis-pedidos}">Mis pedidos</a>.</li>
+        </ul>
+
+        <h2>Devoluciones y cambios</h2>
+        <p>Queremos que quedes feliz con tu compra. Si algo no salió bien, estas son las condiciones:</p>
+        <ul class="lista-simple">
+            <li>Si recibes un producto dañado, vencido o diferente al pedido, escríbenos dentro de los 5 días hábiles siguientes a la entrega y lo cambiamos o te devolvemos el dinero.</li>
+            <li>Por higiene, los productos de uso personal abiertos o usados no tienen cambio, salvo que presenten defectos de fábrica.</li>
+            <li>Conforme al Estatuto del Consumidor (Ley 1480 de 2011), en compras a distancia puedes ejercer el derecho de retracto dentro de los 5 días hábiles siguientes a la entrega, salvo las excepciones previstas en la ley.</li>
+            <li>Para iniciar una devolución, conserva el empaque original y escríbenos desde la página de <a class="enlace-inline" th:href="@{/contacto}">contacto</a>.</li>
+        </ul>
+    </article>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

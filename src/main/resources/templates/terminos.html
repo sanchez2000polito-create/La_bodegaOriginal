@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Términos y condiciones')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <article class="pagina-texto">
+        <h1 class="titulo-pagina">Términos y condiciones</h1>
+
+        <!--
+            TEXTO DE EJEMPLO: no es asesoría legal. Adáptalo a tu negocio (razón social, NIT, políticas
+            reales) y hazlo revisar por un abogado antes de publicar la tienda.
+        -->
+        <h2>1. Aceptación</h2>
+        <p>Al usar este sitio y realizar pedidos aceptas estos términos y condiciones. Si no estás de acuerdo, te pedimos no usar el sitio.</p>
+
+        <h2>2. Productos y precios</h2>
+        <p>Los precios se expresan en pesos colombianos (COP). Hacemos todo lo posible para que las imágenes y descripciones sean exactas, pero pueden presentar pequeñas diferencias con el producto recibido. Los precios y la disponibilidad pueden cambiar sin previo aviso.</p>
+
+        <h2>3. Pedidos y disponibilidad</h2>
+        <p>Un pedido queda sujeto a la disponibilidad de los productos. Si algún producto se agota, te contactaremos para ofrecerte una alternativa o la anulación de esa parte del pedido.</p>
+
+        <h2>4. Pagos</h2>
+        <p>Los métodos de pago disponibles se muestran al finalizar la compra. Los datos de pago serán procesados por la pasarela de pagos correspondiente.</p>
+
+        <h2>5. Envíos y devoluciones</h2>
+        <p>Las condiciones de entrega, cambios y devoluciones están descritas en la página de <a class="enlace-inline" th:href="@{/envios}">envíos y devoluciones</a>.</p>
+
+        <h2>6. Cuenta de usuario</h2>
+        <p>Eres responsable de mantener la confidencialidad de tu contraseña y de la actividad realizada con tu cuenta.</p>
+
+        <h2>7. Protección de datos personales</h2>
+        <p>Usamos tus datos personales únicamente para gestionar tus pedidos y mejorar tu experiencia, conforme a la Ley 1581 de 2012 y sus normas complementarias. Puedes solicitar la consulta, actualización o eliminación de tus datos desde la página de <a class="enlace-inline" th:href="@{/contacto}">contacto</a>.</p>
+
+        <h2>8. Cambios en estos términos</h2>
+        <p>Podemos actualizar estos términos en cualquier momento. La versión vigente es la publicada en esta página.</p>
+    </article>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

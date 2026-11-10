@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Inicio')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main>
+    <section class="hero">
+        <div class="contenedor hero-interno">
+            <p class="hero-etiqueta">Belleza para todos los días</p>
+            <h1>Tus marcas favoritas de cosméticos, en un solo lugar</h1>
+            <p class="hero-texto">Maquillaje, cuidado de la piel, cabello y fragancias de las marcas más vendidas en Colombia.</p>
+            <a class="btn btn-primario btn-grande" th:href="@{/catalogo}">Ver catálogo</a>
+        </div>
+    </section>
+
+    <section class="seccion contenedor">
+        <h2 class="titulo-seccion">Compra por categoría</h2>
+        <div class="rejilla-categorias">
+            <a class="categoria" th:each="c : ${categorias}"
+               th:href="@{/catalogo(categoriaId=${c.id})}" th:text="${c.nombre}">Categoría</a>
+        </div>
+    </section>
+
+    <section class="seccion contenedor">
+        <h2 class="titulo-seccion">Los más vendidos</h2>
+        <div class="rejilla-productos">
+            <th:block th:each="p : ${masVendidos}">
+                <div th:replace="~{fragments/tarjeta-producto :: tarjeta(${p})}"></div>
+            </th:block>
+        </div>
+    </section>
+
+    <section class="seccion seccion-suave">
+        <div class="contenedor">
+            <h2 class="titulo-seccion">Marcas destacadas</h2>
+            <div class="chips">
+                <a class="chip" th:each="m : ${marcas}"
+                   th:href="@{/catalogo(marcaId=${m.id})}" th:text="${m.nombre}">Marca</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="seccion contenedor">
+        <h2 class="titulo-seccion">Novedades</h2>
+        <div class="rejilla-productos">
+            <th:block th:each="p : ${novedades}">
+                <div th:replace="~{fragments/tarjeta-producto :: tarjeta(${p})}"></div>
+            </th:block>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

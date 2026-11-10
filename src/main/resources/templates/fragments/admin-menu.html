@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+<!-- Uso: <nav th:replace="~{fragments/admin-menu :: menu('productos')}"></nav> -->
+<nav class="admin-menu" th:fragment="menu(activo)" aria-label="Administración">
+    <a th:href="@{/admin/productos}" th:classappend="${activo == 'productos'} ? 'activo'">Productos</a>
+    <a th:href="@{/admin/marcas}" th:classappend="${activo == 'marcas'} ? 'activo'">Marcas</a>
+</nav>
+</body>
+</html>

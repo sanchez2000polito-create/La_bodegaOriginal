@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Pedido confirmado')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <div class="confirmacion">
+        <p class="hero-etiqueta">¡Gracias por tu compra!</p>
+        <h1 class="titulo-pagina" th:text="'Pedido #' + ${pedido.id} + ' recibido'">Pedido #1 recibido</h1>
+
+        <p class="aviso-form aviso-ok" th:if="${pedido.metodoPago == 'CONTRA_ENTREGA'}">
+            Pagarás cuando recibas tu pedido.
+        </p>
+        <p class="aviso-form aviso-info" th:if="${pedido.metodoPago != 'CONTRA_ENTREGA'}">
+            Tu pedido quedó registrado como pendiente de pago. La pasarela de pagos aún no está conectada,
+            así que no se hizo ningún cobro.
+        </p>
+
+        <div class="confirmacion-grid">
+            <section class="detalle-bloque">
+                <h2>Envío</h2>
+                <p>
+                    <strong th:text="${pedido.nombreDestinatario}">Nombre</strong><br>
+                    <span th:text="${pedido.direccion}">Dirección</span><br>
+                    <span th:text="${pedido.ciudad} + ', ' + ${pedido.departamento}">Ciudad, Departamento</span><br>
+                    <span th:text="'Tel. ' + ${pedido.telefono}">Tel.</span>
+                </p>
+                <p class="texto-suave"
+                   th:text="'Método de pago: ' + (${pedido.metodoPago == 'PSE'} ? 'PSE' : (${pedido.metodoPago == 'TARJETA'} ? 'Tarjeta' : 'Contra entrega'))">Método</p>
+            </section>
+
+            <section class="detalle-bloque">
+                <h2>Productos</h2>
+                <ul class="resumen-lista">
+                    <li th:each="i : ${pedido.items}">
+                        <span th:text="${i.cantidad} + ' × ' + ${i.nombreProducto}">1 × Producto</span>
+                        <strong th:text="'$' + ${#numbers.formatDecimal(i.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</strong>
+                    </li>
+                </ul>
+                <dl>
+                    <div class="resumen-fila">
+                        <dt>Subtotal</dt>
+                        <dd th:text="'$' + ${#numbers.formatDecimal(pedido.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                    </div>
+                    <div class="resumen-fila">
+                        <dt>Envío</dt>
+                        <dd th:text="'$' + ${#numbers.formatDecimal(pedido.envio, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                    </div>
+                    <div class="resumen-fila resumen-total">
+                        <dt>Total</dt>
+                        <dd th:text="'$' + ${#numbers.formatDecimal(pedido.total, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                    </div>
+                </dl>
+            </section>
+        </div>
+
+        <div class="confirmacion-acciones">
+            <a class="btn btn-primario" th:href="@{/catalogo}">Seguir comprando</a>
+            <a class="btn btn-secundario" th:href="@{/mis-pedidos}">Ver mis pedidos</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

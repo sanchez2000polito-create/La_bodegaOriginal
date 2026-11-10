@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Admin: producto')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <div class="admin-cabecera">
+        <h1 class="titulo-pagina" th:text="${productoForm.id == null} ? 'Nuevo producto' : 'Editar producto'">Producto</h1>
+    </div>
+
+    <nav th:replace="~{fragments/admin-menu :: menu('productos')}"></nav>
+
+    <form class="formulario formulario-admin" th:action="@{${accion}}" th:object="${productoForm}" method="post" novalidate>
+
+        <h2>Datos del producto</h2>
+
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" th:field="*{nombre}">
+        <small class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</small>
+
+        <div class="fila-dos">
+            <div>
+                <label for="marcaId">Marca</label>
+                <select id="marcaId" th:field="*{marcaId}">
+                    <option value="">Selecciona…</option>
+                    <option th:each="m : ${marcas}" th:value="${m.id}" th:text="${m.nombre}"></option>
+                </select>
+                <small class="error" th:if="${#fields.hasErrors('marcaId')}" th:errors="*{marcaId}">Error</small>
+            </div>
+            <div>
+                <label for="categoriaId">Categoría</label>
+                <select id="categoriaId" th:field="*{categoriaId}">
+                    <option value="">Selecciona…</option>
+                    <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}"></option>
+                </select>
+                <small class="error" th:if="${#fields.hasErrors('categoriaId')}" th:errors="*{categoriaId}">Error</small>
+            </div>
+        </div>
+
+        <div class="fila-dos">
+            <div>
+                <label for="precio">Precio (COP)</label>
+                <input id="precio" type="number" step="any" min="0" th:field="*{precio}" placeholder="59900">
+                <small class="error" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}">Error</small>
+            </div>
+            <div>
+                <label for="stock">Stock (unidades)</label>
+                <input id="stock" type="number" step="1" min="0" th:field="*{stock}">
+                <small class="error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}">Error</small>
+            </div>
+        </div>
+
+        <div class="fila-dos">
+            <div>
+                <label for="tipoPiel">Tipo de piel o cabello</label>
+                <input id="tipoPiel" type="text" th:field="*{tipoPiel}" list="tipos-piel" placeholder="Todo tipo, Piel seca…">
+                <datalist id="tipos-piel">
+                    <option th:each="t : ${tiposPiel}" th:value="${t}"></option>
+                </datalist>
+                <small class="error" th:if="${#fields.hasErrors('tipoPiel')}" th:errors="*{tipoPiel}">Error</small>
+            </div>
+            <div>
+                <label for="etiquetas">Etiquetas (separadas por coma)</label>
+                <input id="etiquetas" type="text" th:field="*{etiquetas}" placeholder="labios, mate, larga duración">
+                <small class="error" th:if="${#fields.hasErrors('etiquetas')}" th:errors="*{etiquetas}">Error</small>
+            </div>
+        </div>
+
+        <label class="casilla">
+            <input type="checkbox" th:field="*{masVendido}"> Marcar como "Más vendido"
+        </label>
+
+        <h2>Descripción</h2>
+
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" rows="4" th:field="*{descripcion}"></textarea>
+        <small class="error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">Error</small>
+
+        <label for="ingredientes">Ingredientes</label>
+        <textarea id="ingredientes" rows="3" th:field="*{ingredientes}"></textarea>
+        <small class="error" th:if="${#fields.hasErrors('ingredientes')}" th:errors="*{ingredientes}">Error</small>
+
+        <label for="modoUso">Modo de uso</label>
+        <textarea id="modoUso" rows="3" th:field="*{modoUso}"></textarea>
+        <small class="error" th:if="${#fields.hasErrors('modoUso')}" th:errors="*{modoUso}">Error</small>
+
+        <h2>Imagen</h2>
+        <p class="texto-suave">
+            Usa imágenes de fuentes legítimas (catálogo oficial de la marca o distribuidor autorizado) y
+            anota la fuente. Si dejas la URL vacía, la tienda muestra "imagen pendiente".
+        </p>
+
+        <label for="urlImagen">URL de la imagen</label>
+        <input id="urlImagen" type="text" th:field="*{urlImagen}" placeholder="https://…">
+        <small class="error" th:if="${#fields.hasErrors('urlImagen')}" th:errors="*{urlImagen}">Error</small>
+
+        <label for="fuenteImagen">Fuente de la imagen</label>
+        <input id="fuenteImagen" type="text" th:field="*{fuenteImagen}" placeholder="Catálogo oficial de la marca, distribuidor autorizado…">
+        <small class="error" th:if="${#fields.hasErrors('fuenteImagen')}" th:errors="*{fuenteImagen}">Error</small>
+
+        <img class="vista-previa" th:if="${productoForm.urlImagen != null and !productoForm.urlImagen.isBlank()}"
+             th:src="${productoForm.urlImagen}" alt="Vista previa de la imagen">
+
+        <div class="formulario-botones">
+            <button type="submit" class="btn btn-primario">Guardar producto</button>
+            <a class="btn btn-secundario" th:href="@{/admin/productos}">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

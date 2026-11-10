@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Mi carrito')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <h1 class="titulo-pagina">Mi carrito</h1>
+
+    <!-- Carrito vacío -->
+    <div class="vacio" th:if="${resumen.lineas.isEmpty()}">
+        <p>Tu carrito está vacío.</p>
+        <a class="btn btn-primario" th:href="@{/catalogo}">Ver catálogo</a>
+        <a class="btn btn-secundario" th:href="@{/guardados}" th:if="${guardadosCantidad gt 0}"
+           th:text="'Ver guardados (' + ${guardadosCantidad} + ')'">Ver guardados</a>
+    </div>
+
+    <div class="carrito-layout" th:if="${!resumen.lineas.isEmpty()}">
+
+        <!-- Productos que se van a comprar ahora -->
+        <section class="lineas">
+            <article class="linea" th:each="l : ${resumen.lineas}">
+                <a class="linea-imagen" th:href="@{/producto/{id}(id=${l.producto.id})}">
+                    <img th:unless="${l.producto.imagenPendiente}" th:src="${l.producto.urlImagen}"
+                         th:alt="${l.producto.nombre}" loading="lazy">
+                    <span class="imagen-pendiente" th:if="${l.producto.imagenPendiente}"><span>Sin imagen</span></span>
+                </a>
+
+                <div class="linea-info">
+                    <p class="tarjeta-marca" th:text="${l.producto.marca.nombre}">Marca</p>
+                    <h2 class="linea-nombre">
+                        <a th:href="@{/producto/{id}(id=${l.producto.id})}" th:text="${l.producto.nombre}">Producto</a>
+                    </h2>
+                    <p class="texto-suave" th:text="'$' + ${#numbers.formatDecimal(l.producto.precio, 0, 'POINT', 0, 'COMMA')} + ' c/u'">$0 c/u</p>
+
+                    <form class="linea-cantidad" th:action="@{/carrito/actualizar}" method="post">
+                        <input type="hidden" name="productoId" th:value="${l.producto.id}">
+                        <label th:for="'cant-' + ${l.producto.id}">Cantidad</label>
+                        <input type="number" name="cantidad" th:id="'cant-' + ${l.producto.id}"
+                               th:value="${l.cantidad}" min="0" th:max="${l.producto.stock}">
+                        <button type="submit" class="btn btn-secundario btn-chico">Actualizar</button>
+                    </form>
+                </div>
+
+                <div class="linea-acciones">
+                    <p class="precio" th:text="'$' + ${#numbers.formatDecimal(l.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</p>
+
+                    <form th:action="@{/carrito/guardar}" method="post">
+                        <input type="hidden" name="productoId" th:value="${l.producto.id}">
+                        <button type="submit" class="btn-enlace">♡ Guardar para después</button>
+                    </form>
+                    <form th:action="@{/carrito/eliminar}" method="post">
+                        <input type="hidden" name="productoId" th:value="${l.producto.id}">
+                        <button type="submit" class="btn-enlace btn-enlace-peligro">Eliminar</button>
+                    </form>
+                </div>
+            </article>
+
+            <form th:action="@{/carrito/vaciar}" method="post">
+                <button type="submit" class="btn-enlace btn-enlace-peligro">Vaciar carrito</button>
+            </form>
+        </section>
+
+        <!-- Resumen del pedido -->
+        <aside class="resumen">
+            <h2>Resumen</h2>
+            <dl>
+                <div class="resumen-fila">
+                    <dt th:text="'Subtotal (' + ${resumen.cantidadTotal} + (${resumen.cantidadTotal} == 1 ? ' producto' : ' productos') + ')'">Subtotal</dt>
+                    <dd th:text="'$' + ${#numbers.formatDecimal(resumen.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                </div>
+                <div class="resumen-fila">
+                    <dt>Envío estimado</dt>
+                    <dd th:if="${resumen.envioGratis}" class="gratis">¡Gratis!</dd>
+                    <dd th:unless="${resumen.envioGratis}"
+                        th:text="'$' + ${#numbers.formatDecimal(resumen.envio, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                </div>
+                <div class="resumen-fila resumen-total">
+                    <dt>Total</dt>
+                    <dd th:text="'$' + ${#numbers.formatDecimal(resumen.total, 0, 'POINT', 0, 'COMMA')}">$0</dd>
+                </div>
+            </dl>
+
+            <p class="texto-suave" th:unless="${resumen.envioGratis}"
+               th:text="'Agrega $' + ${#numbers.formatDecimal(resumen.faltaParaEnvioGratis, 0, 'POINT', 0, 'COMMA')} + ' más y el envío es gratis.'">Envío gratis</p>
+
+            <!-- El checkout se construye en la etapa 5. -->
+            <a class="btn btn-primario btn-bloque btn-grande" th:href="@{/checkout}">Continuar con la compra</a>
+            <a class="enlace-limpiar" th:href="@{/catalogo}">Seguir comprando</a>
+            <a class="enlace-limpiar" th:href="@{/guardados}" th:if="${guardadosCantidad gt 0}"
+               th:text="'Ver guardados (' + ${guardadosCantidad} + ')'">Ver guardados</a>
+        </aside>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head(${producto.nombre})}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+
+    <nav class="migas" aria-label="Ruta de navegación">
+        <a th:href="@{/}">Inicio</a> &rsaquo;
+        <a th:href="@{/catalogo}">Catálogo</a> &rsaquo;
+        <a th:href="@{/catalogo(categoriaId=${producto.categoria.id})}" th:text="${producto.categoria.nombre}">Categoría</a> &rsaquo;
+        <span th:text="${producto.nombre}">Producto</span>
+    </nav>
+
+    <section class="ficha">
+        <!-- Imagen -->
+        <div class="ficha-galeria">
+            <div class="ficha-imagen">
+                <img th:unless="${producto.imagenPendiente}"
+                     th:src="${producto.urlImagen}" th:alt="${producto.nombre}">
+                <div class="imagen-pendiente" th:if="${producto.imagenPendiente}">
+                    <span>Imagen pendiente</span>
+                </div>
+                <span class="insignia" th:if="${producto.masVendido}">Más vendido</span>
+            </div>
+            <p class="texto-suave" th:if="${producto.fuenteImagen != null and !producto.fuenteImagen.isBlank()}"
+               th:text="'Fuente de la imagen: ' + ${producto.fuenteImagen}">Fuente de la imagen</p>
+        </div>
+
+        <!-- Datos y compra -->
+        <div class="ficha-info">
+            <a class="ficha-marca" th:href="@{/catalogo(marcaId=${producto.marca.id})}" th:text="${producto.marca.nombre}">Marca</a>
+            <h1 th:text="${producto.nombre}">Nombre del producto</h1>
+            <p class="precio precio-grande" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</p>
+
+            <p class="stock stock-ok" th:if="${producto.stock gt 10}">Disponible</p>
+            <p class="stock stock-poco" th:if="${producto.stock gt 0 and producto.stock le 10}"
+               th:text="'¡Últimas ' + ${producto.stock} + ' unidades!'">Últimas unidades</p>
+            <p class="stock stock-agotado" th:if="${producto.stock le 0}">Agotado</p>
+
+            <p class="ficha-resumen" th:text="${producto.descripcion}">Descripción corta</p>
+
+            <ul class="datos">
+                <li><strong>Categoría:</strong> <span th:text="${producto.categoria.nombre}">Categoría</span></li>
+                <li th:if="${producto.tipoPiel != null}"><strong>Ideal para:</strong> <span th:text="${producto.tipoPiel}">Tipo</span></li>
+                <li><strong>Actualizado:</strong> <span th:text="${#temporals.format(producto.fechaActualizacion, 'dd/MM/yyyy')}">01/01/2026</span></li>
+            </ul>
+
+            <div class="chips chips-pequenos" th:if="${!producto.etiquetasLista.isEmpty()}">
+                <a class="chip" th:each="e : ${producto.etiquetasLista}"
+                   th:href="@{/catalogo(q=${e})}" th:text="${e}">etiqueta</a>
+            </div>
+
+            <!-- Los dos formularios funcionan desde la etapa 4 (carrito y guardados). -->
+            <form class="ficha-compra" th:action="@{/carrito/agregar}" method="post" th:if="${producto.stock gt 0}">
+                <input type="hidden" name="productoId" th:value="${producto.id}">
+                <label for="cantidad">Cantidad</label>
+                <input id="cantidad" type="number" name="cantidad" value="1" min="1" th:max="${producto.stock}">
+                <button type="submit" class="btn btn-primario">Agregar al carrito</button>
+            </form>
+
+            <form th:action="@{/guardados/agregar}" method="post">
+                <input type="hidden" name="productoId" th:value="${producto.id}">
+                <button type="submit" class="btn btn-secundario">♡ Guardar para comprar después</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Descripción completa, ingredientes y modo de uso -->
+    <section class="ficha-detalles">
+        <article class="detalle-bloque">
+            <h2>Descripción</h2>
+            <p th:text="${producto.descripcion}">Descripción</p>
+        </article>
+        <article class="detalle-bloque" th:if="${producto.ingredientes != null and !producto.ingredientes.isBlank()}">
+            <h2>Ingredientes</h2>
+            <p th:text="${producto.ingredientes}">Ingredientes</p>
+        </article>
+        <article class="detalle-bloque" th:if="${producto.modoUso != null and !producto.modoUso.isBlank()}">
+            <h2>Modo de uso</h2>
+            <p th:text="${producto.modoUso}">Modo de uso</p>
+        </article>
+    </section>
+
+    <!-- Productos similares -->
+    <section class="relacionados" th:if="${!similares.isEmpty()}">
+        <h2 class="titulo-seccion">Productos similares</h2>
+        <div class="rejilla-productos">
+            <th:block th:each="p : ${similares}">
+                <div th:replace="~{fragments/tarjeta-producto :: tarjeta(${p})}"></div>
+            </th:block>
+        </div>
+    </section>
+
+    <!-- También te puede gustar -->
+    <section class="relacionados" th:if="${!tambien.isEmpty()}">
+        <h2 class="titulo-seccion">También te puede gustar</h2>
+        <div class="rejilla-productos">
+            <th:block th:each="p : ${tambien}">
+                <div th:replace="~{fragments/tarjeta-producto :: tarjeta(${p})}"></div>
+            </th:block>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

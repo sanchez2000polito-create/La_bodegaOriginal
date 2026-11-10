@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Admin: productos')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <div class="admin-cabecera">
+        <h1 class="titulo-pagina">Panel de administración</h1>
+        <a class="btn btn-primario" th:href="@{/admin/productos/nuevo}">+ Nuevo producto</a>
+    </div>
+
+    <nav th:replace="~{fragments/admin-menu :: menu('productos')}"></nav>
+
+    <form class="admin-filtros" th:action="@{/admin/productos}" method="get">
+        <input type="search" name="q" th:value="${q}" placeholder="Buscar por nombre o marca" aria-label="Buscar">
+        <label class="casilla">
+            <input type="checkbox" name="sinImagen" value="true" th:checked="${sinImagen}">
+            Solo sin imagen (<span th:text="${pendientes}">0</span>)
+        </label>
+        <button type="submit" class="btn btn-secundario btn-chico">Filtrar</button>
+        <a class="enlace-inline" th:href="@{/admin/productos}">Limpiar</a>
+    </form>
+
+    <p class="resultados" th:text="${productos.size()} + (${productos.size()} == 1 ? ' producto' : ' productos')">0 productos</p>
+
+    <div class="vacio" th:if="${productos.isEmpty()}">
+        <p>No hay productos con ese filtro.</p>
+    </div>
+
+    <div class="tabla-contenedor" th:if="${!productos.isEmpty()}">
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Actualizado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${productos}">
+                <td>
+                    <img class="mini-imagen" th:unless="${p.imagenPendiente}" th:src="${p.urlImagen}"
+                         th:alt="${p.nombre}" loading="lazy">
+                    <span class="badge badge-aviso" th:if="${p.imagenPendiente}">Sin imagen</span>
+                </td>
+                <td>
+                    <strong th:text="${p.nombre}">Producto</strong>
+                    <span class="badge" th:if="${p.masVendido}">Más vendido</span><br>
+                    <small class="texto-suave" th:text="${p.marca.nombre}">Marca</small>
+                </td>
+                <td th:text="${p.categoria.nombre}">Categoría</td>
+                <td th:text="'$' + ${#numbers.formatDecimal(p.precio, 0, 'POINT', 0, 'COMMA')}">$0</td>
+                <td><span th:text="${p.stock}" th:classappend="${p.stock le 5} ? 'stock-bajo'">0</span></td>
+                <td th:text="${#temporals.format(p.fechaActualizacion, 'dd/MM/yyyy')}">01/01/2026</td>
+                <td class="acciones-tabla">
+                    <a th:href="@{/producto/{id}(id=${p.id})}">Ver</a>
+                    <a th:href="@{/admin/productos/{id}/editar(id=${p.id})}">Editar</a>
+                    <!-- Confirmación sin JavaScript: se abre con un clic y pide confirmar -->
+                    <details class="confirmar">
+                        <summary>Eliminar</summary>
+                        <form th:action="@{/admin/productos/{id}/eliminar(id=${p.id})}" method="post">
+                            <p>¿Eliminar este producto?</p>
+                            <button type="submit" class="btn btn-peligro btn-chico">Sí, eliminar</button>
+                        </form>
+                    </details>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

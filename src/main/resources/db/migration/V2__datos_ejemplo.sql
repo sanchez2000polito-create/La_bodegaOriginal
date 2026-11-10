@@ -1,0 +1,153 @@
+INSERT INTO marca (nombre) VALUES
+ ('Maybelline'), ('L''Oréal Paris'), ('Natura'), ('Avon'), ('Yanbal'),
+ ('Ésika'), ('Cyzone'), ('L''Bel'), ('Garnier'), ('Nivea'),
+ ('Dove'), ('Revlon'), ('Cetaphil'), ('La Roche-Posay'), ('Eucerin'),
+ ('The Ordinary'), ('MAC'), ('Carolina Herrera'), ('Vogue');
+
+INSERT INTO categoria (nombre) VALUES
+ ('Maquillaje'), ('Cuidado de la piel'), ('Cuidado del cabello'),
+ ('Fragancias'), ('Cuidado corporal');
+
+INSERT INTO producto
+ (nombre, descripcion, ingredientes, modo_uso, precio, stock, url_imagen, fuente_imagen,
+  tipo_piel, etiquetas, mas_vendido, fecha_actualizacion, marca_id, categoria_id)
+VALUES
+('Máscara de pestañas volumen y longitud',
+ 'Máscara que alarga y da volumen a las pestañas con cepillo flexible.',
+ 'Agua, cera de abejas, pigmentos, polímeros.',
+ 'Aplicar de la raíz a las puntas, de 1 a 2 capas.',
+ 39900, 50, NULL, NULL, 'Todo tipo', 'pestañas,ojos,volumen', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Maybelline'), (SELECT id FROM categoria WHERE nombre='Maquillaje')),
+
+('Base de maquillaje acabado natural',
+ 'Base ligera de cobertura media que unifica el tono sin sensación pesada.',
+ 'Agua, ciclopentasiloxano, glicerina, pigmentos minerales.',
+ 'Aplicar con esponja o brocha desde el centro del rostro hacia afuera.',
+ 54900, 40, NULL, NULL, 'Piel mixta', 'rostro,base,cobertura media', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Maybelline'), (SELECT id FROM categoria WHERE nombre='Maquillaje')),
+
+('Sérum de ácido hialurónico',
+ 'Sérum facial hidratante que ayuda a rellenar y suavizar la piel.',
+ 'Agua, glicerina, ácido hialurónico, niacinamida.',
+ 'Aplicar 2 a 3 gotas en rostro limpio, mañana y noche, antes de la crema.',
+ 89900, 30, NULL, NULL, 'Todo tipo', 'sérum,hidratación,antiedad', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='L''Oréal Paris'), (SELECT id FROM categoria WHERE nombre='Cuidado de la piel')),
+
+('Crema corporal hidratante',
+ 'Crema corporal de absorción rápida con aroma suave que hidrata todo el día.',
+ 'Agua, glicerina, manteca vegetal, extractos botánicos.',
+ 'Aplicar sobre la piel limpia y seca con un suave masaje.',
+ 32900, 60, NULL, NULL, 'Piel seca', 'cuerpo,hidratación', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Natura'), (SELECT id FROM categoria WHERE nombre='Cuidado corporal')),
+
+('Perfume femenino floral',
+ 'Fragancia femenina de notas florales y frutales para uso diario.',
+ 'Alcohol desnaturalizado, fragancia, agua.',
+ 'Rociar a 15 cm sobre el cuello y las muñecas.',
+ 79900, 25, NULL, NULL, 'Todo tipo', 'perfume,floral,mujer', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Avon'), (SELECT id FROM categoria WHERE nombre='Fragancias')),
+
+('Crema facial antiedad',
+ 'Crema facial que ayuda a reducir la apariencia de líneas de expresión.',
+ 'Agua, glicerina, péptidos, vitamina E.',
+ 'Aplicar en rostro y cuello cada noche.',
+ 69900, 35, NULL, NULL, 'Piel madura', 'facial,antiedad', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Yanbal'), (SELECT id FROM categoria WHERE nombre='Cuidado de la piel')),
+
+('Labial líquido mate',
+ 'Labial líquido de acabado mate y color intenso de larga duración.',
+ 'Isododecano, ceras, pigmentos, vitamina E.',
+ 'Aplicar sobre labios limpios y dejar secar unos segundos.',
+ 24900, 80, NULL, NULL, 'Todo tipo', 'labios,mate,larga duración', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Ésika'), (SELECT id FROM categoria WHERE nombre='Maquillaje')),
+
+('Sombras de ojos paleta de 9 tonos',
+ 'Paleta de 9 sombras mate y brillantes para looks de día y de noche.',
+ 'Talco, mica, dimeticona, pigmentos.',
+ 'Aplicar con brocha o dedo sobre el párpado.',
+ 44900, 45, NULL, NULL, 'Todo tipo', 'ojos,paleta,sombras', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Cyzone'), (SELECT id FROM categoria WHERE nombre='Maquillaje')),
+
+('Crema de peinar nutritiva',
+ 'Crema sin enjuague que nutre y controla el frizz del cabello.',
+ 'Agua, aceites vegetales, proteínas, silicona cosmética.',
+ 'Aplicar en cabello húmedo, de medios a puntas.',
+ 29900, 55, NULL, NULL, 'Cabello seco', 'cabello,nutrición,frizz', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='L''Bel'), (SELECT id FROM categoria WHERE nombre='Cuidado del cabello')),
+
+('Agua micelar desmaquillante',
+ 'Agua micelar que limpia y desmaquilla en un solo paso sin enjuague.',
+ 'Agua, glicerina, poloxámero, ácido cítrico.',
+ 'Empapar un algodón y pasarlo por rostro y ojos.',
+ 28900, 70, NULL, NULL, 'Piel sensible', 'limpieza,desmaquillante', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Garnier'), (SELECT id FROM categoria WHERE nombre='Cuidado de la piel')),
+
+('Crema hidratante corporal y facial',
+ 'Crema suave de uso diario para rostro y cuerpo con hidratación prolongada.',
+ 'Agua, glicerina, aceite de almendras, pantenol.',
+ 'Aplicar las veces necesarias sobre la piel limpia.',
+ 19900, 90, NULL, NULL, 'Todo tipo', 'hidratación,uso diario', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Nivea'), (SELECT id FROM categoria WHERE nombre='Cuidado corporal')),
+
+('Jabón en barra hidratante',
+ 'Jabón en barra con crema hidratante que limpia sin resecar.',
+ 'Tensioactivos suaves, crema hidratante, glicerina.',
+ 'Usar en ducha o baño sobre la piel húmeda y enjuagar.',
+ 8900, 120, NULL, NULL, 'Piel seca', 'jabón,ducha,hidratación', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Dove'), (SELECT id FROM categoria WHERE nombre='Cuidado corporal')),
+
+('Base de maquillaje larga duración',
+ 'Base de larga duración con cobertura media a alta y acabado semimate.',
+ 'Agua, dimeticona, glicerina, pigmentos.',
+ 'Aplicar en rostro limpio e hidratado con brocha o esponja.',
+ 74900, 30, NULL, NULL, 'Piel grasa', 'rostro,larga duración', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Revlon'), (SELECT id FROM categoria WHERE nombre='Maquillaje')),
+
+('Limpiador facial suave',
+ 'Limpiador para rostro y cuerpo que no reseca ni irrita la piel sensible.',
+ 'Agua, glicerina, alcohol cetílico, pantenol.',
+ 'Aplicar sobre la piel húmeda, masajear y enjuagar.',
+ 59900, 40, NULL, NULL, 'Piel sensible', 'limpieza,piel sensible', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Cetaphil'), (SELECT id FROM categoria WHERE nombre='Cuidado de la piel')),
+
+('Gel limpiador para piel grasa',
+ 'Gel limpiador que elimina el exceso de grasa sin resecar.',
+ 'Agua térmica, glicerina, óxido de zinc.',
+ 'Masajear sobre el rostro húmedo y enjuagar con abundante agua.',
+ 79900, 25, NULL, NULL, 'Piel grasa', 'limpieza,acné,piel grasa', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='La Roche-Posay'), (SELECT id FROM categoria WHERE nombre='Cuidado de la piel')),
+
+('Crema para piel muy seca',
+ 'Crema intensiva para piel seca que ayuda a restaurar la barrera cutánea.',
+ 'Agua, glicerina, urea, ceramidas.',
+ 'Aplicar una o dos veces al día sobre la piel limpia.',
+ 69900, 30, NULL, NULL, 'Piel seca', 'hidratación,piel seca', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Eucerin'), (SELECT id FROM categoria WHERE nombre='Cuidado corporal')),
+
+('Sérum de niacinamida y zinc',
+ 'Sérum que ayuda a controlar el brillo y mejorar la apariencia de los poros.',
+ 'Agua, niacinamida, zinc PCA, pentilenglicol.',
+ 'Aplicar unas gotas en rostro limpio, por la mañana y por la noche.',
+ 49900, 35, NULL, NULL, 'Piel grasa', 'sérum,poros,niacinamida', TRUE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='The Ordinary'), (SELECT id FROM categoria WHERE nombre='Cuidado de la piel')),
+
+('Labial satinado',
+ 'Labial cremoso de pigmento intenso y acabado satinado.',
+ 'Ceras, aceites, pigmentos, vitamina E.',
+ 'Aplicar directamente sobre los labios.',
+ 109900, 20, NULL, NULL, 'Todo tipo', 'labios,color,premium', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='MAC'), (SELECT id FROM categoria WHERE nombre='Maquillaje')),
+
+('Perfume femenino elegante',
+ 'Fragancia femenina sofisticada de notas florales y amaderadas.',
+ 'Alcohol desnaturalizado, fragancia, agua.',
+ 'Rociar a 15 cm sobre el cuello y las muñecas.',
+ 389900, 15, NULL, NULL, 'Todo tipo', 'perfume,lujo,mujer', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Carolina Herrera'), (SELECT id FROM categoria WHERE nombre='Fragancias')),
+
+('Polvo compacto matificante',
+ 'Polvo compacto que controla el brillo y fija el maquillaje.',
+ 'Talco, mica, estearato de magnesio, pigmentos.',
+ 'Aplicar con la esponja sobre la zona T cuando lo necesites.',
+ 22900, 60, NULL, NULL, 'Piel grasa', 'rostro,matificante,polvo', FALSE, CURRENT_DATE,
+ (SELECT id FROM marca WHERE nombre='Vogue'), (SELECT id FROM categoria WHERE nombre='Maquillaje'));

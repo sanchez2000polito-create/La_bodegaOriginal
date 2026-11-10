@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Guardados')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <h1 class="titulo-pagina">Guardados para comprar después</h1>
+
+    <div class="vacio" th:if="${guardados.isEmpty()}">
+        <p>Aún no has guardado productos. Toca "Guardar para comprar después" en la ficha de un producto.</p>
+        <a class="btn btn-primario" th:href="@{/catalogo}">Ver catálogo</a>
+        <a class="btn btn-secundario" th:href="@{/carrito}" th:if="${carritoCantidad gt 0}"
+           th:text="'Ir al carrito (' + ${carritoCantidad} + ')'">Ir al carrito</a>
+    </div>
+
+    <th:block th:if="${!guardados.isEmpty()}">
+        <p class="resultados">
+            Estos productos no están en tu carrito. Con "Agregar al carrito" se mueven al carrito.
+            <a class="enlace-inline" th:href="@{/carrito}">Ir al carrito</a>
+        </p>
+
+        <div class="rejilla-productos">
+            <div class="guardado" th:each="p : ${guardados}">
+                <div th:replace="~{fragments/tarjeta-producto :: tarjeta(${p})}"></div>
+                <form th:action="@{/guardados/eliminar}" method="post">
+                    <input type="hidden" name="productoId" th:value="${p.id}">
+                    <button type="submit" class="btn-enlace btn-enlace-peligro">Quitar de guardados</button>
+                </form>
+            </div>
+        </div>
+    </th:block>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Admin: marcas')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <div class="admin-cabecera">
+        <h1 class="titulo-pagina">Panel de administración</h1>
+        <a class="btn btn-primario" th:href="@{/admin/marcas/nueva}">+ Nueva marca</a>
+    </div>
+
+    <nav th:replace="~{fragments/admin-menu :: menu('marcas')}"></nav>
+
+    <p class="resultados" th:text="${marcas.size()} + (${marcas.size()} == 1 ? ' marca' : ' marcas')">0 marcas</p>
+
+    <div class="tabla-contenedor tabla-angosta">
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Productos</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="m : ${marcas}">
+                <td><strong th:text="${m.nombre}">Marca</strong></td>
+                <td th:text="${conteo[m.id]} ?: 0">0</td>
+                <td class="acciones-tabla">
+                    <a th:href="@{/catalogo(marcaId=${m.id})}">Ver en la tienda</a>
+                    <a th:href="@{/admin/marcas/{id}/editar(id=${m.id})}">Editar</a>
+                    <details class="confirmar">
+                        <summary>Eliminar</summary>
+                        <form th:action="@{/admin/marcas/{id}/eliminar(id=${m.id})}" method="post">
+                            <p>¿Eliminar esta marca?</p>
+                            <button type="submit" class="btn btn-peligro btn-chico">Sí, eliminar</button>
+                        </form>
+                    </details>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>

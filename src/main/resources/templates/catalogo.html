@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Catálogo')}"></head>
+<body>
+<div th:replace="~{fragments/encabezado :: encabezado}"></div>
+
+<main class="contenedor seccion">
+    <h1 class="titulo-pagina">Catálogo</h1>
+
+    <div class="catalogo-layout">
+        <!-- Filtros: todo con parámetros GET, sin JavaScript -->
+        <aside>
+            <form class="filtros" th:action="@{/catalogo}" method="get">
+                <h2>Filtrar</h2>
+
+                <label for="q">Buscar</label>
+                <input id="q" type="search" name="q" th:value="${filtro.q}" placeholder="Nombre o marca">
+
+                <label for="marcaId">Marca</label>
+                <select id="marcaId" name="marcaId">
+                    <option value="">Todas las marcas</option>
+                    <option th:each="m : ${marcas}" th:value="${m.id}" th:text="${m.nombre}"
+                            th:selected="${filtro.marcaId != null and filtro.marcaId == m.id}"></option>
+                </select>
+
+                <label for="categoriaId">Categoría</label>
+                <select id="categoriaId" name="categoriaId">
+                    <option value="">Todas las categorías</option>
+                    <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}"
+                            th:selected="${filtro.categoriaId != null and filtro.categoriaId == c.id}"></option>
+                </select>
+
+                <label for="tipoPiel">Tipo de piel</label>
+                <select id="tipoPiel" name="tipoPiel">
+                    <option value="">Todos</option>
+                    <option th:each="t : ${tiposPiel}" th:value="${t}" th:text="${t}"
+                            th:selected="${filtro.tipoPiel == t}"></option>
+                </select>
+
+                <label>Precio (COP)</label>
+                <div class="fila-precio">
+                    <input type="number" min="0" step="1000" name="precioMin" th:value="${filtro.precioMin}" placeholder="Mín.">
+                    <input type="number" min="0" step="1000" name="precioMax" th:value="${filtro.precioMax}" placeholder="Máx.">
+                </div>
+
+                <label for="orden">Ordenar por</label>
+                <select id="orden" name="orden">
+                    <option value="" th:selected="${filtro.orden == null or filtro.orden == ''}">Más vendidos</option>
+                    <option value="precio_asc" th:selected="${filtro.orden == 'precio_asc'}">Precio: menor a mayor</option>
+                    <option value="precio_desc" th:selected="${filtro.orden == 'precio_desc'}">Precio: mayor a menor</option>
+                    <option value="novedades" th:selected="${filtro.orden == 'novedades'}">Novedades</option>
+                    <option value="nombre" th:selected="${filtro.orden == 'nombre'}">Nombre (A-Z)</option>
+                </select>
+
+                <button type="submit" class="btn btn-primario btn-bloque">Aplicar filtros</button>
+                <a class="enlace-limpiar" th:href="@{/catalogo}">Limpiar filtros</a>
+            </form>
+        </aside>
+
+        <section>
+            <p class="resultados" th:text="${productos.size()} + (${productos.size()} == 1 ? ' producto' : ' productos')">0 productos</p>
+
+            <div class="rejilla-productos" th:if="${!productos.isEmpty()}">
+                <th:block th:each="p : ${productos}">
+                    <div th:replace="~{fragments/tarjeta-producto :: tarjeta(${p})}"></div>
+                </th:block>
+            </div>
+
+            <div class="vacio" th:if="${productos.isEmpty()}">
+                <p>No encontramos productos con esos filtros.</p>
+                <a class="btn btn-primario" th:href="@{/catalogo}">Ver todo el catálogo</a>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/pie :: pie}"></footer>
+</body>
+</html>
